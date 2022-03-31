@@ -142,6 +142,8 @@ global_depth = int(sys.argv[3])
 minimax_estimate = max_min(input_board, global_depth)
 if global_depth % 2 == 0 and global_depth > 0:
     board_position = swap_colors(board_position)
+with open(output_file_name, 'w') as of:
+    of.write(board_position)
 print('Board Position:', board_position)
 print('Positions Evaluated by static estimation:', num_positions_evaluated)
 print('MINIMAX estimate:', minimax_estimate)
