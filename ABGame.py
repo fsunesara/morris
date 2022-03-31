@@ -27,8 +27,6 @@ def generate_move(board):
     for i in range(0, len(board)):
         if board[i] == 'W':
             n = neighbors(i)
-            if n is None:
-                print('woo')
             for j in n:
                 if board[j] == 'x':
                     b = list(board)
@@ -41,7 +39,6 @@ def generate_move(board):
                         L.append(b)
     return L
 
-#TODO FINISH NEIGHBORS
 def neighbors(j):
     if j == 0:
         return [1, 2, 6]
