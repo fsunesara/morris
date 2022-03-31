@@ -172,7 +172,7 @@ def static_estimation(board):
     elif len(L) == 0:
         return 10000
     else:
-        return 1000*(board.count('B') - board.count('W') - len(L))
+        return 1000*(board.count('B') - board.count('W')) - len(L)
 
 def min_max(board, depth):
     global minimax_estimate, num_positions_evaluated, board_position
