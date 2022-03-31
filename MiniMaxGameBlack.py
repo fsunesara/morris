@@ -1,7 +1,7 @@
 import sys
 
 def generate_moves_midgame_endgame(board):
-    if board.count('W') == 3:
+    if board.count('B') == 3:
         return generate_hopping(board)
     else:
         return generate_move(board)
@@ -9,12 +9,12 @@ def generate_moves_midgame_endgame(board):
 def generate_hopping(board):
     L = []
     for i in range(0, len(board)):
-        if board[i] == 'W':
+        if board[i] == 'B':
             for j in range(0, len(board)):
                 if board[j] == 'x':
                     b = list(board)
                     b[i] = 'x'
-                    b[j] = 'W'
+                    b[j] = 'B'
                     b = ''.join(b)
                     if close_mill(j, b):
                         generate_remove(b, L)
@@ -25,13 +25,13 @@ def generate_hopping(board):
 def generate_move(board):
     L = []
     for i in range(0, len(board)):
-        if board[i] == 'W':
+        if board[i] == 'B':
             n = neighbors(i)
             for j in n:
                 if board[j] == 'x':
                     b = list(board)
                     b[i] = 'x'
-                    b[j] = 'W'
+                    b[j] = 'B'
                     b = ''.join(b)
                     if close_mill(j, b):
                         generate_remove(b, L)
@@ -39,6 +39,7 @@ def generate_move(board):
                         L.append(b)
     return L
 
+#TODO FINISH NEIGHBORS
 def neighbors(j):
     if j == 0:
         return [1, 2, 6]
@@ -87,7 +88,7 @@ def neighbors(j):
 
 def generate_remove(board, L):
     for i in range(len(board)):
-        if board[i] == 'B':
+        if board[i] == 'W':
             if not close_mill(i, board):
                 b = list(board)
                 b[i] = 'x'
@@ -142,7 +143,7 @@ def close_mill(j, board):
     else:
         return False
 
-def black_move_generator(board):
+def white_move_generator(board):
     tempb = swap_colors(board)
     L = generate_moves_midgame_endgame(tempb)
 
@@ -163,15 +164,15 @@ def swap_colors(board):
     return ''.join(temp)
 
 def static_estimation(board):
-    L = black_move_generator(board)
-    if board.count('B') <= 2:
+    L = white_move_generator(board)
+    if board.count('W') <= 2:
         return 10000
-    elif board.count('W') <= 2:
+    elif board.count('B') <= 2:
         return -10000
     elif len(L) == 0:
         return 10000
     else:
-        return 1000*(board.count('W') - board.count('B') - len(L))
+        return 1000*(board.count('B') - board.count('W') - len(L))
 
 def min_max(board, depth):
     global minimax_estimate, num_positions_evaluated, board_position
@@ -180,7 +181,7 @@ def min_max(board, depth):
         return static_estimation(board)
     else:
         v = 1000000
-        children = black_move_generator(board)
+        children = white_move_generator(board)
         for y in children:
             prev = v
             v = min(v, max_min(y, depth-1))
